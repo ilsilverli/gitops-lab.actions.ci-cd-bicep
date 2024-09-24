@@ -1,0 +1,34 @@
+ame: CI-CD
+ 
+on:
+  push:
+    branches: 
+      - main
+    paths-ignore: 
+      - README.md
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    AZURE_RG: RG3
+  AZURE_SUBSCRIPTION: <<ef7ae9f0-c534-4478-b980-4fc04415b57f>>
+  AZURE-LOCATION: WestEurope
+  jobs:
+  Build-Job:
+    runs-on: ubuntu-latest
+    env:
+      configuration: release
+      steps:
+- name: Checkout Sources
+  uses: actions/checkout@v4
+- name: Setup .NET
+  uses: actions/setup-dotnet@v2.0.0
+  with:
+    dotnet-version: 6.0.x
+- name: Restore dependencies
+  run: dotnet restore
+- name: Build
+  run: dotnet build --no-restore --configuration ${{ env.configuration }}
+- name: Test
+  run: dotnet test --no-build --verbosity normal --configuration ${{ env.configuration }}
+- name: Publish 
+  run: dotnet publish --configuration ${{ env.configuration }} --output ${{runner.temp }}/publish
