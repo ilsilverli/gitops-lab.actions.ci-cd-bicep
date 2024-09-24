@@ -1,5 +1,4 @@
-  ame: CI-CD
- 
+name: CI-CD  
 on:
   push:
     branches: 
@@ -7,16 +6,17 @@ on:
     paths-ignore: 
       - README.md
   pull_request:
-    branches: [ main ]
+      branches: [ main ]
   workflow_dispatch:
+env:
     AZURE_RG: RG3
-  AZURE_SUBSCRIPTION: <<ef7ae9f0-c534-4478-b980-4fc04415b57f>>
-  AZURE-LOCATION: WestEurope
-  jobs:
-  Build-Job:
-    runs-on: ubuntu-latest
-    env:
-      configuration: release
+    AZURE_SUBSCRIPTION: <<ef7ae9f0-c534-4478-b980-4fc04415b57f>>
+    AZURE-LOCATION: WestEurope
+jobs:
+    Build-Job:
+      runs-on: ubuntu-latest
+      env:
+        configuration: release
       steps:
         - name: Checkout Sources
           uses: actions/checkout@v4
